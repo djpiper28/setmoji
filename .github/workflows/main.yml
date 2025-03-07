@@ -1,0 +1,36 @@
+name: main
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches: ["*"]
+  schedule:
+    - cron: "0 * * * 0"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.20"
+      - name: Run generator
+        run: |
+          cd generator/
+          go build && ./generator
+      - name: Push changes
+        run: |
+          git config --global user.name 'Github Actions'
+          git config --global user.email 'djpiper28@users.noreply.github.com'
+          git add sets/
+          git commit -m "feat(sets, automated): added new sets" 
+          git push
