@@ -59,4 +59,6 @@ func main() {
 		logger.Logger.Debug("Sleeping to avoid rate limit banning...")
 		time.Sleep(time.Millisecond * 100)
 	}
+
+	logger.Logger.Info("Complete")
 }
